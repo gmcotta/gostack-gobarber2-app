@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import logoImg from '../../assets/logo.png';
 
 import getValidationErrors from '../../utils/getValidationErrors';
+import { useAuth } from '../../context/AuthContext';
 
 import {
   Container,
@@ -39,6 +40,10 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation();
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
+
+  const { signIn, user } = useAuth();
+  console.log(user);
+
   const handleSubmit = useCallback(
     async (data: SignInFormData) => {
       try {
@@ -54,7 +59,7 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        // await signIn({ email: data.email, password: data.password });
+        await signIn({ email: data.email, password: data.password });
 
         // history.push('/dashboard');
       } catch (error) {
@@ -70,7 +75,7 @@ const SignIn: React.FC = () => {
         );
       }
     },
-    [],
+    [signIn],
   );
   return (
     <>
