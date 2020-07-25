@@ -17,6 +17,7 @@ import * as Yup from 'yup';
 import logoImg from '../../assets/logo.png';
 
 import getValidationErrors from '../../utils/getValidationErrors';
+import api from '../../services/api';
 
 import {
   Container,
@@ -55,14 +56,14 @@ const SignUp: React.FC = () => {
           abortEarly: false,
         });
 
-        // await api.post('/users', data);
+        await api.post('/users', data);
 
         Alert.alert(
           'Cadastro realizado!',
           'Você já pode fazer seu login no site!',
         )
 
-        // history.push('/');
+        navigation.navigate('SignIn');
       } catch (error) {
         if (error instanceof Yup.ValidationError) {
           const errors = getValidationErrors(error);
