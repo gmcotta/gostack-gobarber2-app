@@ -22,6 +22,7 @@ interface UserData {
 
 interface IAuthContext {
   user: UserData;
+  loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
   updateUser(user: UserData): void;
@@ -36,6 +37,7 @@ export const AuthContext = createContext<IAuthContext>({} as IAuthContext);
 
 export const AuthProvider: React.FC = ({ children }) => {
   const [data, setData] = useState<AuthState>({} as AuthState);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function loadStoredData(): Promise<void> {
@@ -48,7 +50,7 @@ export const AuthProvider: React.FC = ({ children }) => {
         setData({ token: token[1], user: JSON.parse(user[1]) });
       }
 
-      setData
+      setLoading(false);
     }
 
     loadStoredData();
@@ -92,7 +94,7 @@ export const AuthProvider: React.FC = ({ children }) => {
 
   return (
     <AuthContext.Provider
-      value={{ user: data.user, signIn, signOut, updateUser }}
+      value={{ user: data.user, loading, signIn, signOut, updateUser }}
     >
       {children}
     </AuthContext.Provider>
