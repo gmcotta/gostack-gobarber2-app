@@ -25,7 +25,7 @@ interface IAuthContext {
   loading: boolean;
   signIn(credentials: SignInCredentials): Promise<void>;
   signOut(): void;
-  updateUser(user: UserData): void;
+  updateUser(user: UserData): Promise<void>;
 }
 
 interface AuthState {
@@ -90,7 +90,7 @@ export const AuthProvider: React.FC = ({ children }) => {
       });
       await AsyncStorage.setItem('@GoBarber:user', JSON.stringify(user));
     },
-    [data.token],
+    [setData, data.token],
   );
 
   return (
